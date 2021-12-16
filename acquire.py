@@ -70,3 +70,30 @@ WHERE  prop.latitude IS NOT NULL
         # renaming column names to one's I like better
          
         return df  
+    
+    
+def get_mall_data():
+    '''
+    This function reads csv stored in the computer or the Zillow data from the Codeup db into a dataframe.
+    '''
+    filename = "mall_cust.csv"
+
+    if os.path.isfile(filename):
+        return pd.read_csv(filename, index_col='customer_id')
+    else:
+        # read the SQL query into a dataframe
+        sql_query = """
+                select * from customers
+        """
+        df = pd.read_sql(sql_query, get_db_url('mall_customers'),index_col='customer_id') #SQL query , database name, Pandas df
+
+        # Write that dataframe to disk for later. Called "caching" the data for later.
+        # Return the dataframe to the calling code
+        # renaming column names to one's I like better
+        
+        df.to_csv(filename) 
+
+        # Return the dataframe to the calling code
+        # renaming column names to one's I like better
+         
+        return df  
